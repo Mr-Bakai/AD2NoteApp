@@ -1,4 +1,4 @@
-package com.hfad.ad2noteapp;
+package com.hfad.ad2noteapp.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,7 +23,6 @@ public class ProfileFragment extends Fragment {
 
     private ActivityResultLauncher<String> mGetContent;
     private ImageView imageView;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,

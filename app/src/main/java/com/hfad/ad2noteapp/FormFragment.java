@@ -13,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.hfad.ad2noteapp.models.Note;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class FormFragment extends Fragment {
     private EditText editText;
 
@@ -34,13 +40,18 @@ public class FormFragment extends Fragment {
     private void save() {
         String text = editText.getText().toString().trim();
         Bundle bundle = new Bundle();
-        bundle.putString("text", text);
+
+        String date = java.text.DateFormat.getDateTimeInstance().format(new Date());
+        Note note = new Note(text, date);
+
+        bundle.putSerializable("note", note);
         getParentFragmentManager().setFragmentResult("rk_form", bundle);
         close();
     }
-
+    
     private void close() {
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(requireActivity(),
+                R.id.nav_host_fragment);
         navController.navigateUp();
     }
 }
