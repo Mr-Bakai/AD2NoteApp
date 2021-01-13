@@ -27,7 +27,8 @@ public class FormFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_form, container, false);
+        return inflater.inflate(R.layout.fragment_form,
+                container, false);
     }
 
     @Override
