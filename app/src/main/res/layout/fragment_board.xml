@@ -5,10 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.board.BoardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/btnSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Skip" />
 
 </FrameLayout>

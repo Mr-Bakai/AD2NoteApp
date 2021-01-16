@@ -5,6 +5,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,6 +25,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hfad.ad2noteapp.OnItemClickListener;
+import com.hfad.ad2noteapp.Prefs;
 import com.hfad.ad2noteapp.R;
 import com.hfad.ad2noteapp.models.Note;
 
@@ -33,6 +37,8 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
+    private  Prefs prefs;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
@@ -45,6 +51,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         adapter = new NoteAdapter(getContext());
         add10();
     }
@@ -69,6 +76,7 @@ public class HomeFragment extends Fragment {
 
     private void initList() {
         recyclerView.setAdapter(adapter);
+
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(int position) {
@@ -88,16 +96,16 @@ public class HomeFragment extends Fragment {
                 Button delete = view.findViewById(R.id.delete);
                 Button cancel = view.findViewById(R.id.cancel);
 
-                 AlertDialog.Builder alert = new AlertDialog.Builder(getContext())
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext())
                         .setView(view);
 
-                 final AlertDialog dialog = alert.create();
+                final AlertDialog dialog = alert.create();
 
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       adapter.remove(position);
-                       dialog.dismiss();
+                        adapter.remove(position);
+                        dialog.dismiss();
                     }
                 });
 
@@ -107,7 +115,6 @@ public class HomeFragment extends Fragment {
                         dialog.dismiss();
                     }
                 });
-
                 dialog.show();
             }
         });
@@ -128,5 +135,25 @@ public class HomeFragment extends Fragment {
                         adapter.addItem(note);
                     }
                 });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu,
+                                    @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_options, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        prefs = new Prefs(requireContext());
+
+        switch (item.getItemId()) {
+            case R.id.clear_settings:
+                prefs.clearS();
+                return true;
+            case R.id.test:
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
