@@ -11,7 +11,6 @@ public class BoardData {
         this.imageResourceId = imageResourceId;
     }
 
-
     public String getName() {
         return name;
     }

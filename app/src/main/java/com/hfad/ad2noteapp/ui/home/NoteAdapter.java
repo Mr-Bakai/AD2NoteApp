@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hfad.ad2noteapp.OnItemClickListener;
 import com.hfad.ad2noteapp.R;
 import com.hfad.ad2noteapp.models.Note;
+import com.hfad.ad2noteapp.ui.board.BoardAdapter;
 
 import java.util.ArrayList;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
-
 
     private ArrayList<Note> list;
     private OnItemClickListener onItemClickListener;
@@ -59,23 +59,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         this.onItemClickListener = onItemClickListener;
     }
 
-
     // returns note
     public Note getItem(int position) {
      return list.get(position);
     }
 
-
-//    @Override
-//    public void registerAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
-//        super.registerAdapterDataObserver(observer);
-//    }
-
     public void remove(int position) {
         list.remove(position);
         notifyItemRemoved(position);
     }
-
 
     //===============================ViewHolder===================================
     public class ViewHolder extends RecyclerView.ViewHolder{

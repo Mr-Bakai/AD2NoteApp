@@ -49,7 +49,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         return 3;
     }
 
-
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
@@ -62,7 +61,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         private ImageView imageView;
         private TextView textTitle;
         private TextView textDesc;
-
         private Button btnStart;
 
         public ViewHolder(@NonNull View itemView) {

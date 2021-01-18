@@ -21,7 +21,7 @@ public class Prefs {
 
 
     public void clearS(){
-       // preferences.edit().remove("isShown").apply();
         preferences.edit().clear().apply();
+        // preferences.edit().remove("isShown").apply();
     }
 }

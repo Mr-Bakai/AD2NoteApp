@@ -24,6 +24,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hfad.ad2noteapp.MainActivity;
 import com.hfad.ad2noteapp.OnItemClickListener;
 import com.hfad.ad2noteapp.Prefs;
 import com.hfad.ad2noteapp.R;
@@ -101,20 +102,12 @@ public class HomeFragment extends Fragment {
 
                 final AlertDialog dialog = alert.create();
 
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        adapter.remove(position);
-                        dialog.dismiss();
-                    }
+                delete.setOnClickListener(v -> {
+                    adapter.remove(position);
+                    dialog.dismiss();
                 });
 
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+                cancel.setOnClickListener(v -> dialog.dismiss());
                 dialog.show();
             }
         });
@@ -128,12 +121,9 @@ public class HomeFragment extends Fragment {
 
     private void setFragmentListener() {
         getParentFragmentManager().setFragmentResultListener("rk_form", getViewLifecycleOwner(),
-                new FragmentResultListener() {
-                    @Override
-                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        Note note = (Note) result.getSerializable("note");
-                        adapter.addItem(note);
-                    }
+                (requestKey, result) -> {
+                    Note note = (Note) result.getSerializable("note");
+                    adapter.addItem(note);
                 });
     }
 
@@ -151,7 +141,8 @@ public class HomeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.clear_settings:
                 prefs.clearS();
-                return true;
+                requireActivity().finish();
+            return true;
             case R.id.test:
         }
         return super.onOptionsItemSelected(item);

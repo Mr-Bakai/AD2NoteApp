@@ -58,6 +58,7 @@ public class BoardFragment extends Fragment {
     // =====================================================================
     private void addBoardData() {
         ArrayList<BoardData> list = new ArrayList<>();
+
         list.add(new BoardData("Connected",
                 "Stay connected anywhere you go. " +
                 "You will have access to fast internet," +
@@ -69,13 +70,15 @@ public class BoardFragment extends Fragment {
         list.add(new BoardData("Together",
                 "Stay together wherever you go ." +
                         " We have tracker in each app so you will be able to see you friends location", R.drawable.travelers));
+
         adapter.addDataToBoard(list);
     }
 
     private void close() {
         Prefs prefs = new Prefs(requireContext());
         prefs.saveBoardsStatus();
-        NavController navController = Navigation.findNavController(requireActivity(),
+        NavController navController = Navigation.findNavController(
+                requireActivity(),
                 R.id.nav_host_fragment);
         navController.navigateUp();
     }
