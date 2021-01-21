@@ -2,6 +2,7 @@ package com.hfad.ad2noteapp.ui.board;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -53,6 +54,19 @@ public class BoardFragment extends Fragment {
 
             }
         });
+
+
+        requireActivity().getOnBackPressedDispatcher().
+                addCallback(
+                getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+
+                        requireActivity().finish();
+
+                    }
+                });
     }
 
     // =====================================================================

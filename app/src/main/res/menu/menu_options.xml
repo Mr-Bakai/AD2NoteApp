@@ -10,7 +10,13 @@
     <item
         android:id="@+id/test"
         android:icon="@drawable/ic_more"
-        android:title="Test"
+        android:title="A-Z"
+        />
+
+    <item
+        android:id="@+id/sortDate"
+        android:icon="@drawable/ic_more"
+        android:title="01-99"
         />
 
 </menu>

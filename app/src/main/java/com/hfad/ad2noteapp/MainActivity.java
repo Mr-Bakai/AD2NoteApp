@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.hfad.ad2noteapp.models.Note;
 import com.hfad.ad2noteapp.ui.board.BoardAdapter;
+import com.hfad.ad2noteapp.ui.home.HomeFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -65,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     navView.setVisibility(View.GONE);
                 }
+
+                if(destination.getId()== R.id.boardFragment){
+
+                    getSupportActionBar().hide();
+
+                } else {
+
+                    getSupportActionBar().show();
+
+                }
             }
         });
     }
@@ -91,11 +105,17 @@ public class MainActivity extends AppCompatActivity {
         3. Добавить поле createdAt и показать в листе
 
 
-
             HM - 3
         1. Показывать кнопку только на 3 странице
         2. Добавить описания на слайды
         3. Добавить три разных картинок на слайды
         4. Добавить меню в HomeFragment для очистки настроек
         5. Добавить кнопку skip на верхний правый угол, которая не двигается
+
+            HM - 4
+
+        1. Удаление записи из БД
+        2. Редактирование записи
+        3. Кнопка в меню для сортировки по алфавиту (одна кнопка)
+        Bonus: Сортировка по времени
  */

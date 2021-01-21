@@ -1,6 +1,7 @@
 package com.hfad.ad2noteapp.ui.home;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hfad.ad2noteapp.App;
 import com.hfad.ad2noteapp.OnItemClickListener;
 import com.hfad.ad2noteapp.R;
 import com.hfad.ad2noteapp.models.Note;
 import com.hfad.ad2noteapp.ui.board.BoardAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
@@ -25,6 +28,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     public NoteAdapter(Context context) {
         list = new ArrayList<>();
         this.context = context;
+    }
+
+    public ArrayList<Note> getList() {
+        return list;
     }
 
     @NonNull
@@ -48,18 +55,17 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public void addItem(Note note) {
         list.add(0,note);
+        Log.e("qweqwe", "addItem: " + note.getTitle() );
         notifyItemInserted(list.indexOf(0));
 
         //notifyItemInserted(list.size() - 1); // here you will get the last position
         //notifyItemInserted(list.indexOf(note)); these are the same
     }
 
-
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    // returns note
     public Note getItem(int position) {
      return list.get(position);
     }
@@ -69,7 +75,20 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         notifyItemRemoved(position);
     }
 
-    //===============================ViewHolder===================================
+    public void setList(List<Note> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void setItem(Note note, int position) {
+        this.list.set(position, note);
+        App.getAppDataBase().noteDao().update(note);
+        Log.e("ololo", "setItem: " + note.getTitle() );
+        notifyItemInserted(position);
+    }
+
+    //=====================================ViewHolder========================================
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView textTitle;
@@ -97,7 +116,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             textDAte = itemView.findViewById(R.id.textDate);
 
         }
-
         public void bind(Note note) {
             textTitle.setText(note.getTitle());
             textDAte.setText(note.getDate());
