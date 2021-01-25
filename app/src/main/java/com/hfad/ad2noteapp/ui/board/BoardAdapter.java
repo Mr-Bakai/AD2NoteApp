@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.hfad.ad2noteapp.OnItemClickListener;
 import com.hfad.ad2noteapp.R;
 import com.hfad.ad2noteapp.models.BoardData;
@@ -62,12 +63,15 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         private TextView textTitle;
         private TextView textDesc;
         private Button btnStart;
+        private LottieAnimationView lt;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
             textDesc = itemView.findViewById(R.id.textDesc);
             imageView = itemView.findViewById(R.id.imageView);
+
+            lt = itemView.findViewById(R.id.animationView);
 
             btnStart = itemView.findViewById(R.id.btnStart);
             btnStart.setOnClickListener(new View.OnClickListener() {
@@ -89,9 +93,10 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             }
 
             BoardData bd =  list.get(position);
-            imageView.setImageResource(bd.getImageResourceId());
+            //imageView.setImageResource(bd.getImageResourceId());
             textTitle.setText(bd.getName());
             textDesc.setText(bd.getDesc());
+            lt.setAnimation(bd.getImageResourceId());
         }
     }
 }

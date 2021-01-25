@@ -1,8 +1,6 @@
 package com.hfad.ad2noteapp.ui.home;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,34 +10,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hfad.ad2noteapp.App;
-import com.hfad.ad2noteapp.MainActivity;
 import com.hfad.ad2noteapp.OnItemClickListener;
 import com.hfad.ad2noteapp.Prefs;
 import com.hfad.ad2noteapp.R;
 import com.hfad.ad2noteapp.models.Note;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
@@ -55,7 +42,6 @@ public class HomeFragment extends Fragment {
     private Note note;
     private Button delete;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,7 +54,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        adapter = new NoteAdapter(getContext());
+        adapter = new NoteAdapter(getActivity());
         loadData();
     }
 
@@ -79,9 +65,8 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         initList();
 
-        view.findViewById(R.id.fab).setOnClickListener(v -> openForm());
+        view.findViewById(R.id.fab).setOnClickListener(v -> openForm(null));
         setFragmentListener();
-
     }
 
     private void loadData() {
@@ -101,13 +86,7 @@ public class HomeFragment extends Fragment {
 
                 note = adapter.getItem(position);
                 temp = position;
-
-                bundle = new Bundle();
-                bundle.putSerializable("noteRedaction", note);
-
-                NavController navController = Navigation.findNavController(requireActivity(),
-                        R.id.nav_host_fragment);
-                navController.navigate(R.id.formFragment, bundle);
+                openForm(note);
             }
 
             @Override
@@ -125,40 +104,45 @@ public class HomeFragment extends Fragment {
                 final AlertDialog dialog = alert.create();
 
                 delete.setOnClickListener(v -> {
-                    if (list.size() > 1) {
-                        App.getAppDataBase().noteDao().delete(list.get(position));
-                    } else {
-                        App.getAppDataBase().noteDao().deleteComplete();
-                    }
+
+//                    if (list.size() == 1) {
+//                        App.getAppDataBase().noteDao().deleteComplete();
+//                    } else {
+//                        App.getAppDataBase().noteDao().delete(note = adapter.getItem(position));
+//                    }
+
+                    App.getAppDataBase().noteDao().delete( note = adapter.getItem(position));
                     adapter.remove(position);
                     dialog.dismiss();
                 });
-
+                
                 cancel.setOnClickListener(v -> dialog.dismiss());
                 dialog.show();
             }
         });
     }
-
-    private void openForm() {
+    
+    private void openForm(Note note) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("note", note);
         NavController navController = Navigation.findNavController(requireActivity(),
                 R.id.nav_host_fragment);
-        navController.navigate(R.id.formFragment);
+        navController.navigate(R.id.formFragment, bundle);
     }
 
     //========================Here we receive our notes from formFragment================================
     private void setFragmentListener() {
-        getParentFragmentManager().setFragmentResultListener("rk_form", getViewLifecycleOwner(),
+        getParentFragmentManager().setFragmentResultListener("rk_form",getViewLifecycleOwner(),
                 (requestKey, result) -> {
 
                     if (result.containsKey("noteForSet")) {
+
                         note = (Note) result.getSerializable("noteForSet");
                         adapter.setItem(note, temp);
 
                     } else {
 
                         note = (Note) result.getSerializable("note");
-                        App.getAppDataBase().noteDao().insert(note);
                         adapter.addItem(note);
 
                     }
@@ -220,7 +204,6 @@ public class HomeFragment extends Fragment {
         }
         adapter.setList(list);
     }
-
 
     private void Sort() {
         list = (ArrayList<Note>) App.getAppDataBase().noteDao().getAll();

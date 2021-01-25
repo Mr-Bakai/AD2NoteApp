@@ -1,20 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#548BDF"
+    android:orientation="vertical"
     tools:context=".ui.ProfileFragment">
 
-   <ImageView
-       android:id="@+id/imageView"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:src="@drawable/ic_pickphoto"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintRight_toRightOf="parent"
-       app:layout_constraintLeft_toLeftOf="parent"
-       app:layout_constraintBottom_toBottomOf="parent"
-       />
+    <androidx.cardview.widget.CardView
+        android:layout_width="120dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="180dp"
+        android:elevation="20dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="25dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_man"
+             />
+
+    </androidx.cardview.widget.CardView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="208dp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/blue_map" />
+
+    <com.google.android.material.card.MaterialCardView
+
+        android:layout_width="match_parent"
+
+        android:layout_height="150dp"
+        android:layout_marginStart="30dp"
+        app:contentPadding="16dp"
+
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="30dp"
+        app:cardCornerRadius="@android:dimen/app_icon_size"
+
+        app:cardElevation="20dp"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+
+            android:text="Bakai Ismailov"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="30dp"
+
+            android:text="android Developer"
+            android:textAllCaps="true"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="60dp"
+
+            android:text="5.5m"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="80dp"
+
+            android:text="Followers"
+            android:textAllCaps="true"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginStart="230dp"
+            android:layout_marginTop="60dp"
+
+            android:text="5.0"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginStart="230dp"
+            android:layout_marginTop="80dp"
+
+            android:text="raiting"
+            android:textAllCaps="true"
+            android:textStyle="bold" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/white"
+        android:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="85dp"
+            android:text="My Works"
+
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="150dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/farmers" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="150dp"
+
+            android:text="Cycling"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="180dp"
+
+            android:text="Cycling app"
+            android:textStyle="bold"
+            />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="220dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/rocket" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="220dp"
+
+            android:text="Rocket"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="250dp"
+
+            android:text="Designing rocket app"
+            android:textStyle="bold"
+            />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

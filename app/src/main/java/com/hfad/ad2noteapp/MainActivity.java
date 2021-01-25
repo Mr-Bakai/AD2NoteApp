@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.hfad.ad2noteapp.models.Note;
 import com.hfad.ad2noteapp.ui.board.BoardAdapter;
 import com.hfad.ad2noteapp.ui.home.HomeFragment;
@@ -35,8 +36,12 @@ public class MainActivity extends AppCompatActivity {
 
         Prefs prefs = new Prefs(this);
 
-        if(!prefs.isShown())
+        if(!prefs.isShown()) {
             navController.navigate(R.id.boardFragment);
+        }
+        else if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            navController.navigate(R.id.phoneFragment);
+        }
 
     }
 
@@ -98,12 +103,10 @@ public class MainActivity extends AppCompatActivity {
         4. Установить в ImageView
 
 
-
             HM - 2
         1. Добавить 10 записей
         2. Удалить запись через AlertDialog на долгое нажатие
         3. Добавить поле createdAt и показать в листе
-
 
             HM - 3
         1. Показывать кнопку только на 3 странице
@@ -118,4 +121,10 @@ public class MainActivity extends AppCompatActivity {
         2. Редактирование записи
         3. Кнопка в меню для сортировки по алфавиту (одна кнопка)
         Bonus: Сортировка по времени
+
+            HM - 5
+
+        1. Анимация на board
+        2. Точки на страницы (TabLayout)
+        3. Профиль фрагмент дизайн
  */

@@ -83,7 +83,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public void setItem(Note note, int position) {
         this.list.set(position, note);
-        App.getAppDataBase().noteDao().update(note);
         Log.e("ololo", "setItem: " + note.getTitle() );
         notifyItemInserted(position);
     }

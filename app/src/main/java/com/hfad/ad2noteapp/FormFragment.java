@@ -38,17 +38,13 @@ public class FormFragment extends Fragment {
 
         editText = view.findViewById(R.id.editText);
 
-        if(getArguments() != null) getDataModel();
-
         view.findViewById(R.id.btnSave).setOnClickListener(v -> save());
 
-    }
+        //====================requireArguments======================
+        note = (Note) requireArguments().getSerializable("note");
+        if(note !=null) editText.setText(note.getTitle());
 
-    private void getDataModel() {
-        note = (Note) getArguments().getSerializable("noteRedaction");
-        editText.setText(note.getTitle());
     }
-
 
     private void save() {
 
@@ -56,15 +52,18 @@ public class FormFragment extends Fragment {
         Bundle bundle = new Bundle();
         String date = java.text.DateFormat.getDateTimeInstance().format(new Date());
 
-        if (getArguments() != null){
-            note.setTitle(text);
-            bundle.putSerializable("noteForSet", note);
-
-        } else {
+        if (note == null){
 
             note = new Note(text, date);
             bundle.putSerializable("note", note);
+            App.getAppDataBase().noteDao().insert(note);
 
+        } else {
+
+            note.setTitle(text);
+            bundle.putSerializable("noteForSet", note);
+            App.getAppDataBase().noteDao().update(note);
+            
     }
         getParentFragmentManager().setFragmentResult("rk_form", bundle);
         close();
@@ -75,6 +74,4 @@ public class FormFragment extends Fragment {
                 R.id.nav_host_fragment);
         navController.navigateUp();
     }
-
-
 }

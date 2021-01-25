@@ -21,10 +21,10 @@ public interface NoteDao {
     void insert(Note note);
 
     @Update
-    void update(Note Note);
+    void update(Note note);
 
     @Delete
-    void delete(Note Note);
+    void delete(Note note);
 
     @Query("DELETE FROM note")
     void deleteComplete();

@@ -12,10 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hfad.ad2noteapp.R;
 
@@ -50,4 +54,5 @@ public class ProfileFragment extends Fragment {
     private void openGallery() {
         mGetContent.launch("image/*");
     }
+
 }
