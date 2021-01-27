@@ -39,10 +39,9 @@ public class MainActivity extends AppCompatActivity {
         if(!prefs.isShown()) {
             navController.navigate(R.id.boardFragment);
         }
-        else if(FirebaseAuth.getInstance().getCurrentUser() == null){
-            navController.navigate(R.id.phoneFragment);
-        }
-
+//        else if(FirebaseAuth.getInstance().getCurrentUser() == null){
+//            navController.navigate(R.id.phoneFragment);
+//        }
     }
 
     private void initNavController() {
@@ -97,23 +96,31 @@ public class MainActivity extends AppCompatActivity {
 
 /*
             HM - 1
+
         1. Добавить 4 фрагмент с названием Profile
         2. Добавить imageView в ProfileFragment
         3. При нажатии открыть галерею для выбора картинки
         4. Установить в ImageView
 
 
+
             HM - 2
+
         1. Добавить 10 записей
         2. Удалить запись через AlertDialog на долгое нажатие
         3. Добавить поле createdAt и показать в листе
 
+
+
             HM - 3
+
         1. Показывать кнопку только на 3 странице
         2. Добавить описания на слайды
         3. Добавить три разных картинок на слайды
         4. Добавить меню в HomeFragment для очистки настроек
         5. Добавить кнопку skip на верхний правый угол, которая не двигается
+
+
 
             HM - 4
 
@@ -122,9 +129,19 @@ public class MainActivity extends AppCompatActivity {
         3. Кнопка в меню для сортировки по алфавиту (одна кнопка)
         Bonus: Сортировка по времени
 
+
+
             HM - 5
 
         1. Анимация на board
         2. Точки на страницы (TabLayout)
         3. Профиль фрагмент дизайн
+
+
+
+            HM - 6
+
+        1. Окно для ввода кода из СМС
+        2. Обратный отсчет, при завершении показать первое окно с красным текстом "Проверить номер"
+        3. После Board показывать PhoneFragment
  */

@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class HomeFragment extends Fragment {
-
+    
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
     private Prefs prefs;
@@ -46,7 +46,9 @@ public class HomeFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(
+                R.layout.fragment_home,
+                container, false);
     }
 
     // this method runs once only when you launch the app

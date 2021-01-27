@@ -37,6 +37,7 @@
         android:name="com.hfad.ad2noteapp.ui.board.BoardFragment"
         android:label="fragment_board"
         tools:layout="@layout/fragment_board" />
+
     <fragment
         android:id="@+id/phoneFragment"
         android:name="com.hfad.ad2noteapp.ui.auth.PhoneFragment"

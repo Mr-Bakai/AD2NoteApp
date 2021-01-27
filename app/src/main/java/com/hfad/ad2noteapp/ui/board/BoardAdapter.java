@@ -63,6 +63,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         private TextView textTitle;
         private TextView textDesc;
         private Button btnStart;
+
         private LottieAnimationView lt;
 
         public ViewHolder(@NonNull View itemView) {

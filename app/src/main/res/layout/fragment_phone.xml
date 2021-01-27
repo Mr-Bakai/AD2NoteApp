@@ -11,7 +11,7 @@
         android:id="@+id/editPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="phone"/>
+        android:inputType=""/>
 
     <Button
         android:id="@+id/btnNext"
@@ -20,4 +20,24 @@
         android:layout_marginTop="16dp"
         android:text="Next"/>
 
+
+    <EditText
+        android:id="@+id/editSms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:inputType=""/>
+
+    <Button
+        android:id="@+id/btnSms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:text="SMS"/>
+
+    <TextView
+        android:id="@+id/textTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

@@ -105,6 +105,6 @@ public class BoardFragment extends Fragment {
         NavController navController = Navigation.findNavController(
                 requireActivity(),
                 R.id.nav_host_fragment);
-        navController.navigateUp();
+        navController.navigate(R.id.phoneFragment);
     }
 }
