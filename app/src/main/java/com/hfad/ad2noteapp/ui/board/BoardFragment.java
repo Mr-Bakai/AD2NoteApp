@@ -48,9 +48,6 @@ public class BoardFragment extends Fragment {
 
         tabLayout = view.findViewById(R.id.indicator);
 
-//        tabLayout.setupWithViewPager(viewPager, true);
-
-
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText((""))).attach();
 
@@ -73,9 +70,7 @@ public class BoardFragment extends Fragment {
                 new OnBackPressedCallback(true) {
                     @Override
                     public void handleOnBackPressed() {
-
                         requireActivity().finish();
-
                     }
                 });
     }
@@ -105,6 +100,7 @@ public class BoardFragment extends Fragment {
         NavController navController = Navigation.findNavController(
                 requireActivity(),
                 R.id.nav_host_fragment);
+        navController.navigateUp();
         navController.navigate(R.id.phoneFragment);
     }
 }

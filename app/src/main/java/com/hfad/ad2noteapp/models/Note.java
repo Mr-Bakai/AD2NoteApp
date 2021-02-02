@@ -1,7 +1,11 @@
 package com.hfad.ad2noteapp.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.google.firebase.firestore.DocumentId;
 
 import java.io.Serializable;
 
@@ -9,9 +13,9 @@ import java.io.Serializable;
 @Entity
 public class Note implements Serializable {
 
-    @PrimaryKey(autoGenerate = true)
-    private long id;
-
+    @PrimaryKey
+    @NonNull
+    private String noteId;
     private String title;
     private String date;
 
@@ -21,13 +25,15 @@ public class Note implements Serializable {
         this.date = date;
     }
 
-
-    public long getId() {
-        return id;
+    public Note() {
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(String noteId) {
+        this.noteId = noteId;
     }
 
     public String getTitle() {

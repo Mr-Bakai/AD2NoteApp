@@ -18,6 +18,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.hfad.ad2noteapp.App;
 import com.hfad.ad2noteapp.OnItemClickListener;
 import com.hfad.ad2noteapp.Prefs;
@@ -29,11 +35,12 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class HomeFragment extends Fragment {
-    
+
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
     private Prefs prefs;
     private ArrayList<Note> list;
+    private boolean isUpdating;
 
     boolean click = true;
     boolean clickD = true;
@@ -67,7 +74,10 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         initList();
 
-        view.findViewById(R.id.fab).setOnClickListener(v -> openForm(null));
+        view.findViewById(R.id.fab).setOnClickListener(v ->{
+            isUpdating = false;
+            openForm(null);
+    });
         setFragmentListener();
     }
 
@@ -88,6 +98,7 @@ public class HomeFragment extends Fragment {
 
                 note = adapter.getItem(position);
                 temp = position;
+                isUpdating = true;
                 openForm(note);
             }
 
@@ -106,25 +117,49 @@ public class HomeFragment extends Fragment {
                 final AlertDialog dialog = alert.create();
 
                 delete.setOnClickListener(v -> {
+                    App.getAppDataBase().noteDao().delete(adapter.getItem(position));
+                    Log.e("ololo", "longClick: "+ adapter.getItem(position).getTitle());
 
-//                    if (list.size() == 1) {
-//                        App.getAppDataBase().noteDao().deleteComplete();
-//                    } else {
-//                        App.getAppDataBase().noteDao().delete(note = adapter.getItem(position));
-//                    }
+                    Note note1 = adapter.getItem(position);
 
-                    App.getAppDataBase().noteDao().delete( note = adapter.getItem(position));
                     adapter.remove(position);
+
+                    deleteFromFireStore(note1);
+
                     dialog.dismiss();
                 });
-                
+
                 cancel.setOnClickListener(v -> dialog.dismiss());
                 dialog.show();
             }
         });
     }
-    
+
+    private void deleteFromFireStore(Note note) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference noteRef = db.collection("notes")
+                .document(note.getNoteId());
+
+        noteRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    Log.e("GGG", "onComplete: Deleted " + note.getTitle());
+
+                } else {
+
+                    Log.e("GGG", "onComplete:  failed to delete");
+
+                }
+            }
+        });
+    }
+
     private void openForm(Note note) {
+
         Bundle bundle = new Bundle();
         bundle.putSerializable("note", note);
         NavController navController = Navigation.findNavController(requireActivity(),
@@ -134,19 +169,18 @@ public class HomeFragment extends Fragment {
 
     //========================Here we receive our notes from formFragment================================
     private void setFragmentListener() {
-        getParentFragmentManager().setFragmentResultListener("rk_form",getViewLifecycleOwner(),
+        getParentFragmentManager().setFragmentResultListener("rk_form", getViewLifecycleOwner(),
                 (requestKey, result) -> {
 
-                    if (result.containsKey("noteForSet")) {
+                    note = (Note) result.getSerializable("note");
+                    if (isUpdating && !list.isEmpty()){
 
-                        note = (Note) result.getSerializable("noteForSet");
                         adapter.setItem(note, temp);
 
                     } else {
 
-                        note = (Note) result.getSerializable("note");
                         adapter.addItem(note);
-
+                        Log.e("GGG", "setFragmentListener:  add is running " + note.getTitle() );
                     }
                 });
     }

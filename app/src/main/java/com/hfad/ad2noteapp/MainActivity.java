@@ -39,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
         if(!prefs.isShown()) {
             navController.navigate(R.id.boardFragment);
         }
-//        else if(FirebaseAuth.getInstance().getCurrentUser() == null){
-//            navController.navigate(R.id.phoneFragment);
-//        }
     }
 
     private void initNavController() {
@@ -138,10 +135,27 @@ public class MainActivity extends AppCompatActivity {
         3. Профиль фрагмент дизайн
 
 
-
             HM - 6
 
         1. Окно для ввода кода из СМС
         2. Обратный отсчет, при завершении показать первое окно с красным текстом "Проверить номер"
         3. После Board показывать PhoneFragment
+
+
+            HM - 7
+
+        1. Добавить FireStore
+        2. При добавлении записи в Room, также добавлять в FireStore
+        3. При удалении удалять с FireStore
+        4. Удаление записи через Console
+
+
+
+            HM - 8
+
+        1. id Note должен быть стринг и должен сохранять docId из FireStore
+        2. Удаление записи из FireStore
+        3. Редактирование
+
+
  */
