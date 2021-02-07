@@ -93,7 +93,6 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(int position) {
-
                 // here you get the note that you have clicked on the list
 
                 note = adapter.getItem(position);
@@ -171,7 +170,6 @@ public class HomeFragment extends Fragment {
     private void setFragmentListener() {
         getParentFragmentManager().setFragmentResultListener("rk_form", getViewLifecycleOwner(),
                 (requestKey, result) -> {
-
                     note = (Note) result.getSerializable("note");
                     if (isUpdating && !list.isEmpty()){
 

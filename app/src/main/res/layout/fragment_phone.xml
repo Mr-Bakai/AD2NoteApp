@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,33 +27,46 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Next" />
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/viewCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="32dp"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editCode"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="#000000" />
+
+        <in.aabhasjindal.otptextview.OtpTextView
+            android:id="@+id/otp_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="6"
-            android:inputType="" />
+            android:textColor="#FFFFFF"
+            app:bar_enabled="true"
+            app:bar_height="2dp"
+            app:height="40dp"
+            app:length="6"
+            app:otp_box_background_active="@color/black"
+            app:otp_text_size="24dp"
+            app:width="40dp" />
 
         <Button
             android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Sign In"/>
+            android:text="Sign In" />
 
         <TextView
             android:id="@+id/textTimer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Here will be seconds"
+            />
     </LinearLayout>
 
 

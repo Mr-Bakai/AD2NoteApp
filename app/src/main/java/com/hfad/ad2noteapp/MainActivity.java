@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(!prefs.isShown()) {
             navController.navigate(R.id.boardFragment);
+        } else if (FirebaseAuth.getInstance().getCurrentUser() == null){
+            navController.navigate(R.id.phoneFragment);
         }
     }
 

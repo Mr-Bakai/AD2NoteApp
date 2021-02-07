@@ -28,5 +28,4 @@ public interface NoteDao {
 
     @Query("DELETE FROM note")
     void deleteComplete();
-
 }

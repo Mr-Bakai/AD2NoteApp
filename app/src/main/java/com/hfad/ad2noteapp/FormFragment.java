@@ -19,10 +19,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.hfad.ad2noteapp.models.Note;
 
 import java.util.Date;
@@ -30,7 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FormFragment extends Fragment {
-    private EditText editText;
+    public static final String TAG = "GGG";
+    private TextInputLayout editText;
     private Note note;
 
     @Override
@@ -47,18 +52,18 @@ public class FormFragment extends Fragment {
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        editText = view.findViewById(R.id.editText);
+        editText = (TextInputLayout) view.findViewById(R.id.editText);
 
         view.findViewById(R.id.btnSave).setOnClickListener(v -> save());
 
         //====================requireArguments======================
         note = (Note) requireArguments().getSerializable("note");
-        if (note != null) editText.setText(note.getTitle());
+        if (note != null) editText.getEditText().setText(note.getTitle());
 
     }
 
     private void save() {
-        String text = editText.getText().toString().trim();
+        String text = editText.getEditText().getText().toString().trim();
         Bundle bundle = new Bundle();
         String date = java.text.DateFormat.getDateTimeInstance().format(new Date());
 
@@ -89,7 +94,8 @@ public class FormFragment extends Fragment {
                     note.setNoteId(task.getResult().getId());
                     App.getAppDataBase().noteDao().insert(note);
 
-                    Log.e("GGG", "onComplete: Note has been added with an Id of: " + task.getResult().getId());
+                    Log.e("GGG", "onComplete: Note has been added with an Id of: " +
+                            "" + task.getResult().getId());
                     close();
 
                 } else {
@@ -121,7 +127,7 @@ public class FormFragment extends Fragment {
 
                 } else {
 
-                    Log.e("GGG", "onComplete:  failed to update");
+                    Log.e(TAG, "onComplete:  failed to update");
 
                 }
             }

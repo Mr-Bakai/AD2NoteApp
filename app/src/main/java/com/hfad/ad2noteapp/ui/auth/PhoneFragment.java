@@ -28,10 +28,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.hfad.ad2noteapp.Prefs;
 import com.hfad.ad2noteapp.R;
 
 import java.util.concurrent.TimeUnit;
+
+import in.aabhasjindal.otptextview.OTPListener;
+import in.aabhasjindal.otptextview.OtpTextView;
 
 public class PhoneFragment extends Fragment {
     private View viewPhone;
@@ -41,7 +43,6 @@ public class PhoneFragment extends Fragment {
     private Button btnSignIn;
 
     private EditText editPhone;
-    private EditText editCode;
 
     private String verificationId;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
@@ -50,6 +51,8 @@ public class PhoneFragment extends Fragment {
     private long timeLeftInMilliseconds = 60000; // 10 sec
     private boolean timeRunning;
     private TextView textTimer;
+
+    private OtpTextView otpCode;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -60,11 +63,11 @@ public class PhoneFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         editPhone = view.findViewById(R.id.editPhone);
-        editCode = view.findViewById(R.id.editCode);
         textTimer = view.findViewById(R.id.textTimer);
 
         btnSignIn = view.findViewById(R.id.btnSignIn);
@@ -73,6 +76,8 @@ public class PhoneFragment extends Fragment {
         viewPhone = view.findViewById(R.id.viewPhone);
         viewCode = view.findViewById(R.id.viewCode);
 
+        otpCode = view.findViewById(R.id.otp_view);
+
         setListeners();
         setCallBacks();
         initView();
@@ -80,10 +85,20 @@ public class PhoneFragment extends Fragment {
 
     private void setListeners() {
         btnNext.setOnClickListener(v -> requestSms());
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+        btnSignIn.setOnClickListener(v -> confirm());
+
+        otpCode.setOtpListener(new OTPListener() {
             @Override
-            public void onClick(View v) {
+            public void onInteractionListener() {
+                // fired when user types something in the OtpBox
+            }
+
+            @Override
+            public void onOTPComplete(String otp) {
+                // fired when the user finished to enter otp code
                 confirm();
+                Log.e("TAG", "onOTPComplete: " + otp);
+
             }
         });
 
@@ -101,7 +116,8 @@ public class PhoneFragment extends Fragment {
     }
 
     private void confirm() {
-        String code = editCode.getText().toString();
+//        String code = editCode.getText().toString();
+        String code = otpCode.getOTP().trim();
         if (code.length() == 6 && TextUtils.isDigitsOnly(code)) {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             signIn(credential);

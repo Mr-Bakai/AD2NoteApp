@@ -22,8 +22,6 @@ import java.util.ArrayList;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
-    private String[] titles =  new String[]{"Fast", "Free", "Powerful"};
-
     private ArrayList<BoardData> list = new ArrayList<>();
 
     private OnItemClickListener onItemClickListener;
@@ -59,7 +57,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private ImageView imageView;
         private TextView textTitle;
         private TextView textDesc;
         private Button btnStart;
@@ -70,7 +67,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
             textDesc = itemView.findViewById(R.id.textDesc);
-            imageView = itemView.findViewById(R.id.imageView);
 
             lt = itemView.findViewById(R.id.animationView);
 
