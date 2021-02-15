@@ -1,4 +1,4 @@
-package com.hfad.ad2noteapp;
+package com.hfad.ad2noteapp.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

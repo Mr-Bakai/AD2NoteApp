@@ -16,34 +16,33 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hfad.ad2noteapp.App;
 import com.hfad.ad2noteapp.OnItemClickListener;
-import com.hfad.ad2noteapp.Prefs;
+import com.hfad.ad2noteapp.utils.Prefs;
 import com.hfad.ad2noteapp.R;
 import com.hfad.ad2noteapp.models.Note;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class HomeFragment extends Fragment {
 
+    public static final String TAG = "TAG";
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
     private Prefs prefs;
     private ArrayList<Note> list;
     private boolean isUpdating;
 
-    boolean click = true;
-    boolean clickD = true;
+    boolean sortedByDate = true;
+    boolean sortedByName = true;
     private int temp;
     private Bundle bundle;
     private Note note;
@@ -63,6 +62,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
         adapter = new NoteAdapter(getActivity());
         loadData();
     }
@@ -87,8 +87,27 @@ public class HomeFragment extends Fragment {
         Log.e("ertert", "loadData: " + " we have list setting in here one more time");
     }
 
+    private void loadDataSortedByName(){
+        list = (ArrayList<Note>) App.getAppDataBase().noteDao().getAllByName();
+        adapter.setList(list);
+    }
+
+    private void loadDataSortedByDateDESC(){
+        list = (ArrayList<Note>) App.getAppDataBase().noteDao().getAllByDateDESC();
+        adapter.setList(list);
+    }
+
+    private void loadDataSortedByASC(){
+        list = (ArrayList<Note>) App.getAppDataBase().noteDao().getAllByDateASC();
+        adapter.setList(list);
+    }
+
+
+
     private void initList() {
         recyclerView.setAdapter(adapter);
+
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -117,6 +136,7 @@ public class HomeFragment extends Fragment {
 
                 delete.setOnClickListener(v -> {
                     App.getAppDataBase().noteDao().delete(adapter.getItem(position));
+
                     Log.e("ololo", "longClick: "+ adapter.getItem(position).getTitle());
 
                     Note note1 = adapter.getItem(position);
@@ -133,6 +153,44 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
+    // ===============================ItemTouchHelper====================================
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback
+            (ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT |
+                    ItemTouchHelper.LEFT){
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
+
+            int positionDrag = viewHolder.getAdapterPosition();
+            int positionTarget = target.getAdapterPosition();
+            Collections.swap(adapter.list, positionDrag, positionTarget);
+            adapter.notifyItemMoved(positionDrag, positionTarget);
+            return true;
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            App.getAppDataBase().noteDao().delete(adapter.getItem(viewHolder.getAdapterPosition()));
+
+            Note note1 = adapter.getItem(viewHolder.getAdapterPosition());
+
+            deleteFromFireStore(note1);
+
+            adapter.list.remove(viewHolder.getAdapterPosition());
+
+            adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+        }
+    };
+
+
 
     private void deleteFromFireStore(Note note) {
 
@@ -158,7 +216,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void openForm(Note note) {
-
         Bundle bundle = new Bundle();
         bundle.putSerializable("note", note);
         NavController navController = Navigation.findNavController(requireActivity(),
@@ -201,62 +258,34 @@ public class HomeFragment extends Fragment {
                 requireActivity().finish();
                 return true;
 
-            case R.id.test:
-                Sort();
+            case R.id.sortName:
+                sortedByName();
                 return true;
 
             case R.id.sortDate:
-                SortDate();
+                sortedByDate();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void SortDate() {
-        list = (ArrayList<Note>) App.getAppDataBase().noteDao().getAll();
-        if (clickD) {
-            clickD = false;
-            Collections.sort(list, new Comparator<Note>() {
-                @Override
-                public int compare(Note o1, Note o2) {
-                    if (o1.getDate() == null || o2.getDate() == null)
-                        return 0;
-                    return o1.getDate().compareTo(o2.getDate());
-                }
-            });
+    private void sortedByName() {
+        if (sortedByName) {
+            sortedByName = false;
+            loadData();
         } else {
-            Collections.sort(list, new Comparator<Note>() {
-                @Override
-                public int compare(Note o1, Note o2) {
-                    if (o1.getDate() == null || o2.getDate() == null)
-                        return 0;
-                    return o2.getDate().compareTo(o1.getDate());
-                }
-            });
-
-            clickD = true;
+            loadDataSortedByName();
+            sortedByName = true;
         }
-        adapter.setList(list);
     }
 
-    private void Sort() {
-        list = (ArrayList<Note>) App.getAppDataBase().noteDao().getAll();
-
-        if (click) {
-            click = false;
-
-            Collections.sort(list, new Comparator<Note>() {
-                @Override
-                public int compare(Note o1, Note o2) {
-                    if (o1.getTitle() == null || o2.getTitle() == null)
-                        return 0;
-                    return o1.getTitle().compareTo(o2.getTitle());
-                }
-            });
+    private void sortedByDate() {
+        if (sortedByDate) {
+            loadDataSortedByDateDESC();
+            sortedByDate = false;
         } else {
-            Collections.reverse(list);
-            click = true;
+            loadDataSortedByASC();
+            sortedByDate = true;
         }
-        adapter.setList(list);
     }
 }

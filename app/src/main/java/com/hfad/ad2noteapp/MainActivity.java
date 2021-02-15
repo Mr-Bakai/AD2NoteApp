@@ -1,25 +1,15 @@
 package com.hfad.ad2noteapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.hfad.ad2noteapp.models.Note;
-import com.hfad.ad2noteapp.ui.board.BoardAdapter;
-import com.hfad.ad2noteapp.ui.home.HomeFragment;
+import com.hfad.ad2noteapp.utils.Prefs;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -38,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        getToken();
-
         initNavController();
 
         Prefs prefs = new Prefs(this);
@@ -51,32 +39,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private void getToken() {
-//
-//        FirebaseMessaging.getInstance().getToken()
-//                .addOnCompleteListener(new OnCompleteListener<String>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<String> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.e(TAG, "Fetching FCM registration token failed", task.getException());
-//                            return;
-//
-//                        }
-//
-//                        // Get new FCM registration token
-//                        String token = task.getResult();
-//
-//                        // Log and toast
-//
-//                        Log.e(TAG, "onComplete: " + token );
-//
-//                    }
-//                });
-//    }
-
     private void initNavController() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
-
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home,
                 R.id.navigation_dashboard,

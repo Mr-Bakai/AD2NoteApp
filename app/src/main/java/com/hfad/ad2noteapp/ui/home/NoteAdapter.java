@@ -21,7 +21,7 @@ import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
-    private ArrayList<Note> list;
+    public ArrayList<Note> list;
     private OnItemClickListener onItemClickListener;
     private Context context;
 

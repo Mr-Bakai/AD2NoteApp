@@ -1,5 +1,6 @@
 package com.hfad.ad2noteapp;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,35 +9,35 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.hfad.ad2noteapp.models.Note;
+import com.hfad.ad2noteapp.utils.ProgressButton;
+import com.hfad.ad2noteapp.utils.ProgressDialog;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class FormFragment extends Fragment {
+
     public static final String TAG = "GGG";
+
     private TextInputLayout editText;
     private Note note;
+    private ProgressButton progressButton;
+    private View includeView;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -53,16 +54,28 @@ public class FormFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         editText = (TextInputLayout) view.findViewById(R.id.editText);
+        includeView = view.findViewById(R.id.progressButton);
+        includeView.setOnClickListener(v -> save());
 
-        view.findViewById(R.id.btnSave).setOnClickListener(v -> save());
+//        btnSave = view.findViewById(R.id.btnSave);
+//        //.setOnClickListener(v -> save());
+//        btnSave.setOnClickListener(v -> save());
+
 
         //====================requireArguments======================
         note = (Note) requireArguments().getSerializable("note");
         if (note != null) editText.getEditText().setText(note.getTitle());
 
+        progressButton = new ProgressButton(requireContext(), view);
+
+        showKeyBoard(editText);
+
     }
 
     private void save() {
+        progressButton.buttonActivated();
+        hideKeyboard();
+
         String text = editText.getEditText().getText().toString().trim();
         Bundle bundle = new Bundle();
         String date = java.text.DateFormat.getDateTimeInstance().format(new Date());
@@ -89,23 +102,36 @@ public class FormFragment extends Fragment {
                 .add(note).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
-                if (task.isSuccessful()) {
+                progressButton.buttonFinished();
 
-                    note.setNoteId(task.getResult().getId());
-                    App.getAppDataBase().noteDao().insert(note);
+                /* we wrapped into handler  for better UX
+                 after showing progress bar, we gave a user to see text that says "DONE"
+                 for a second  and then we go back to homeFragment
+                 */
 
-                    Log.e("GGG", "onComplete: Note has been added with an Id of: " +
-                            "" + task.getResult().getId());
-                    close();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-                } else {
+                        if (task.isSuccessful()) {
 
-                    Log.e("GGG", "onComplete: is failed");
+                            note.setNoteId(task.getResult().getId());
+                            App.getAppDataBase().noteDao().insert(note);
 
-                }
+                            Log.e("GGG", "onComplete: Note has been added with an Id of: " +
+                                    "" + task.getResult().getId());
+                            close();
+
+                        } else {
+
+                            Log.e("GGG", "onComplete: is failed");
+
+                        }
+                    }
+                }, 1000);
             }
         });
-
     }
 
     private void upDateFireStore(Note note) {
@@ -138,5 +164,19 @@ public class FormFragment extends Fragment {
         NavController navController = Navigation.findNavController(requireActivity(),
                 R.id.nav_host_fragment);
         navController.navigateUp();
+    }
+
+
+    private void showKeyBoard(TextInputLayout editText) {
+        editText.requestFocus();
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = requireActivity().getCurrentFocus();
+        if (view == null) view = new View(requireActivity());
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

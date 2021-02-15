@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.hfad.ad2noteapp.OnItemClickListener;
-import com.hfad.ad2noteapp.Prefs;
+import com.hfad.ad2noteapp.utils.Prefs;
 import com.hfad.ad2noteapp.R;
 import com.hfad.ad2noteapp.models.BoardData;
 

@@ -21,11 +21,19 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnSave"
-        style="@style/btnStyle"
+<!--    <Button-->
+<!--        android:id="@+id/btnSave"-->
+<!--        style="@style/btnStyle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Save"-->
+<!--        android:textAllCaps="false" />-->
+
+    <include
+        android:id="@+id/progressButton"
+        layout="@layout/progress_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:textAllCaps="false" />
+        />
+
 </LinearLayout>
